@@ -19,13 +19,13 @@ public class BankAccountService {
         bankAccountDAO.saveAccount(account);
         return account;
     }
-    public static BankAccount getAccount(String number) {
-        BankAccount account = bankAccountDAO.getAccount(number);
-        if(account != null){
-            return account;
-        }
-        return new BankAccount(number);  //To change body of created methods use File | Settings | File Templates.
-    }
+//    public static BankAccount getAccount(String number) {
+//        BankAccount account = bankAccountDAO.findAccount(number);
+//        if(account != null){
+//            return account;
+//        }
+//        return null;  //To change body of created methods use File | Settings | File Templates.
+//    }
     public static BankAccount doDeposit(double amount, BankAccount account) {
         account.setBalance(account.getBalance() + amount);
         bankAccountDAO.saveAccount(account);

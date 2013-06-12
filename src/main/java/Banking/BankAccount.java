@@ -12,7 +12,6 @@ public class BankAccount {
     private double balance;
     BankAccount(String number){
         this.number = number;
-
     }
     public String getNumber() {
         return this.number;  //To change body of created methods use File | Settings | File Templates.
