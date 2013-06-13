@@ -16,6 +16,7 @@ public class BankAccountService {
 
     public static BankAccount createAccount(String numberAccount) {
         BankAccount account = new BankAccount(numberAccount);
+        account.setBalance(0.0);
         bankAccountDAO.saveAccount(account);
         return account;
     }

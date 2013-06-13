@@ -20,7 +20,6 @@ import static org.mockito.Mockito.*;
 public class TestBanking {
     @Mock
     private BankAccountDAO mockAccountData;
-
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
@@ -29,7 +28,6 @@ public class TestBanking {
     public BankAccount createBankAccount(String num){
         return BankAccountService.createAccount(num);
     }
-
     @Test
     public void testCreateNewBankAccount(){
         createBankAccount("0123456789");
@@ -45,9 +43,9 @@ public class TestBanking {
         BankAccount account = createBankAccount("0123456789");
 
         ArgumentCaptor<BankAccount> argumentData = ArgumentCaptor.forClass(BankAccount.class);
-        when(mockAccountData.getAccount("0123456789")).thenReturn(account);
-
         verify(mockAccountData).saveAccount(argumentData.capture());
+
+        when(mockAccountData.findAccount("0123456789")).thenReturn(account);
         assertEquals("Account really existed! The balance is: 0.0", account.getMes());
 
     }
@@ -55,9 +53,9 @@ public class TestBanking {
     public void testWhenUserDoDeposit(){
         BankAccount account = createBankAccount("0123456789");
 
-        when(mockAccountData.findAccount(anyString())).thenReturn(account);
+        when(mockAccountData.findAccount("0123456789")).thenReturn(account);
 
-        BankAccountService.doDeposit(account.getNumber(),200, "Deposit");
+        BankAccountService.doDeposit("0123456789",200, "Deposit");
 
         ArgumentCaptor<BankAccount> argumentData = ArgumentCaptor.forClass(BankAccount.class);
 
@@ -70,15 +68,15 @@ public class TestBanking {
     public void testWhenUserWithDraw(){
         BankAccount account = createBankAccount("0123456789");
 
-        when(mockAccountData.findAccount(anyString())).thenReturn(account);
+        when(mockAccountData.findAccount("0123456789")).thenReturn(account);
 
-        BankAccountService.doDeposit(account.getNumber(), 200, "Deposit");
-        BankAccountService.doWithdraw(account.getNumber(),150, "Withdraw");
+        BankAccountService.doDeposit("0123456789", 200, "Deposit");
+        BankAccountService.doWithdraw("0123456789",150, "Withdraw");
 
         ArgumentCaptor<BankAccount> argumentData = ArgumentCaptor.forClass(BankAccount.class);
 
         verify(mockAccountData,times(3)).saveAccount(argumentData.capture());
         List<BankAccount> listAccount = argumentData.getAllValues();
-        assertEquals(50.0, listAccount.get(2).getBalance());
+        assertEquals(50.0, 0.01, listAccount.get(2).getBalance());
     }
 }
