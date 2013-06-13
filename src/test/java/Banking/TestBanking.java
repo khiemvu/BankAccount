@@ -55,23 +55,30 @@ public class TestBanking {
     public void testWhenUserDoDeposit(){
         BankAccount account = createBankAccount("0123456789");
 
-        BankAccountService.doDeposit(200, account);
+        when(mockAccountData.findAccount(anyString())).thenReturn(account);
+
+        BankAccountService.doDeposit(account.getNumber(),200, "Deposit");
 
         ArgumentCaptor<BankAccount> argumentData = ArgumentCaptor.forClass(BankAccount.class);
 
         verify(mockAccountData,times(2)).saveAccount(argumentData.capture());
         List<BankAccount> listAccount = argumentData.getAllValues();
-        assertEquals(100, 0.01, listAccount.get(1).getBalance());
+        assertEquals(200.0, listAccount.get(1).getBalance());
 
     }
     @Test
     public void testWhenUserWithDraw(){
-        BankAccount account = BankAccountService.createAccount("0123456789");
-        BankAccountService.doDeposit(200,account);
-        BankAccountService.doWithdraw(150,account);
+        BankAccount account = createBankAccount("0123456789");
+
+        when(mockAccountData.findAccount(anyString())).thenReturn(account);
+
+        BankAccountService.doDeposit(account.getNumber(), 200, "Deposit");
+        BankAccountService.doWithdraw(account.getNumber(),150, "Withdraw");
+
         ArgumentCaptor<BankAccount> argumentData = ArgumentCaptor.forClass(BankAccount.class);
+
         verify(mockAccountData,times(3)).saveAccount(argumentData.capture());
         List<BankAccount> listAccount = argumentData.getAllValues();
-        assertEquals(50, 0.01, listAccount.get(2).getBalance());
+        assertEquals(50.0, listAccount.get(2).getBalance());
     }
 }

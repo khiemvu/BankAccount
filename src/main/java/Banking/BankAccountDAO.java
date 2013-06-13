@@ -10,4 +10,6 @@ package Banking;
 interface BankAccountDAO {
     public void saveAccount(BankAccount capture);
     public BankAccount getAccount(String s);
+
+    public BankAccount findAccount(String accNumber);
 }
