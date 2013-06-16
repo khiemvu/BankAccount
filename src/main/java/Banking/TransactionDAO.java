@@ -16,4 +16,6 @@ interface TransactionDAO {
     List<Transaction> getAllTransaction(String s);
 
     List<Transaction> getAllTransaction(String s, long startTime, long stopTime);
+
+    List<Transaction> getAllTransaction(String s, int n);
 }

@@ -32,7 +32,7 @@ public class TestTransaction {
 
     }
     public Transaction createNewTransaction(long time, double amount,String des){
-        return TransactionService.createTransactionDeposit("0123456789", time, amount, des);
+        return TransactionService.createTransaction("0123456789", time, amount, des);
     }
     @Test
     public void testSaveTimestampInTransactionDeposit(){
@@ -115,14 +115,11 @@ public class TestTransaction {
   public void testGetNTransactionNewExecute(){
         when(time.getTime()).thenReturn(1100L, 1101L);
         for(int i = 0; i < 3; i++){
-            createNewTransaction(1000L + i,100.0 + i,"Deposit" + i);
-        }
-        for(int i = 0; i < 3; i++){
             createNewTransaction(1100L + i,20.0 + i,"Withdraw" + i);
         }
 
         ArgumentCaptor<Transaction> argument = ArgumentCaptor.forClass(Transaction.class);
-        verify(transactionDAO, times(6)).saveTransaction(argument.capture());
+        verify(transactionDAO, times(3)).saveTransaction(argument.capture());
 
         List<Transaction> listTransaction = argument.getAllValues();
         when(transactionDAO.getAllTransaction("0123456789", 3)).thenReturn(listTransaction);

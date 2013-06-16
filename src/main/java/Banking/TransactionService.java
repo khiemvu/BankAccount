@@ -16,22 +16,20 @@ public class TransactionService {
         TransactionService.transactionDao = transactionDao;
     }
 
-    public static Transaction createTransactionDeposit(String numAcc, long time, double amount, String deposit) {
-        Transaction transaction = new Transaction(numAcc, time,amount,deposit);
+    public static Transaction createTransaction(String numAcc, long time, double amount, String des) {
+        Transaction transaction = new Transaction(numAcc, time,amount,des);
         transactionDao.saveTransaction(transaction);
         return transaction;
     }
-    public static Transaction createTransactionWithdraw(String numAcc, long time, double amount, String deposit) {
 
-        Transaction transaction = new Transaction(numAcc,time,amount,deposit);
-        transactionDao.saveTransaction(transaction);
-        return transaction;
-    }
     public static List<Transaction> getAllTransaction(String accNumber){
         return transactionDao.getAllTransaction(accNumber);
     }
     public static List<Transaction> getAllTransaction(String accNumber, long startTime, long stopTime){
         return transactionDao.getAllTransaction(accNumber, startTime, stopTime);
+    }
+    public static List<Transaction> getAllTransaction(String accNumber, int number){
+        return transactionDao.getAllTransaction(accNumber,number);
     }
 
 }
