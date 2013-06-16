@@ -1,5 +1,7 @@
 package Banking;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: All_in_one
@@ -24,6 +26,9 @@ public class TransactionService {
         Transaction transaction = new Transaction(numAcc,time,amount,deposit);
         transactionDao.saveTransaction(transaction);
         return transaction;
+    }
+    public static List<Transaction> getAllTransaction(String accNumber){
+        return transactionDao.getAllTransaction(accNumber);
     }
 
 }

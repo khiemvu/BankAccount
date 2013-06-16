@@ -41,6 +41,4 @@ public class BankAccountService {
         return account;  //To change body of created methods use File | Settings | File Templates.
     }
 
-
-
 }

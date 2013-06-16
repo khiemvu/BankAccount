@@ -1,5 +1,7 @@
 package Banking;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: All_in_one
@@ -11,4 +13,5 @@ interface TransactionDAO {
 
     Transaction saveTransaction(Transaction capture);
 
+    List<Transaction> getAllTransaction(String s);
 }
