@@ -79,4 +79,5 @@ public class TestBanking {
         List<BankAccount> listAccount = argumentData.getAllValues();
         assertEquals(50.0, 0.01, listAccount.get(2).getBalance());
     }
+
 }

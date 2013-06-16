@@ -11,5 +11,4 @@ interface TransactionDAO {
 
     Transaction saveTransaction(Transaction capture);
 
-    public int recieveListTransaction(Transaction capture);
 }

@@ -31,7 +31,4 @@ public class Transaction {
         return this.des;  //To change body of created methods use File | Settings | File Templates.
     }
 
-    public int getNumTransaction() {
-        return 0;  //To change body of created methods use File | Settings | File Templates.
-    }
 }
