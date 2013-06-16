@@ -31,15 +31,15 @@ public class TestTransaction {
         TransactionService.initTransactionDAO(transactionDAO);
 
     }
-    public Transaction createNewTransaction(double amount,String des){
-        return TransactionService.createTransactionDeposit("0123456789", time.getTime(), amount, des);
+    public Transaction createNewTransaction(long time, double amount,String des){
+        return TransactionService.createTransactionDeposit("0123456789", time, amount, des);
     }
     @Test
     public void testSaveTimestampInTransactionDeposit(){
 
         when(time.getTime()).thenReturn(1000L);
 
-        createNewTransaction(50.0,"Deposit");
+        createNewTransaction(1000L,50.0,"Deposit");
         ArgumentCaptor<Transaction> argument = ArgumentCaptor.forClass(Transaction.class);
 
         verify(transactionDAO).saveTransaction(argument.capture());
@@ -53,7 +53,7 @@ public class TestTransaction {
 
         when(time.getTime()).thenReturn(1000L);
 
-        createNewTransaction(20.0,"Withdraw");
+        createNewTransaction(1000L,20.0,"Withdraw");
 
         ArgumentCaptor<Transaction> argument = ArgumentCaptor.forClass(Transaction.class);
 
@@ -65,12 +65,12 @@ public class TestTransaction {
     }
     @Test
      public void testGetAllTransaction(){
-        when(time.getTime()).thenReturn(1000L);
+
         for(int i = 0; i < 3; i++){
-            createNewTransaction(100.0 + i,"Deposit" + i);
+            createNewTransaction(1000L + i,100.0 + i,"Deposit" + i);
         }
         for(int i = 0; i < 3; i++){
-            createNewTransaction(20.0 + i,"Withdraw" + i);
+            createNewTransaction(1000L + i,20.0 + i,"Withdraw" + i);
         }
 
         ArgumentCaptor<Transaction> argument = ArgumentCaptor.forClass(Transaction.class);
@@ -78,23 +78,23 @@ public class TestTransaction {
 
         List<Transaction> listTransaction = argument.getAllValues();
         when(transactionDAO.getAllTransaction("0123456789")).thenReturn(listTransaction);
-
+        when(time.getTime()).thenReturn(1002L);
         assertEquals(6, listTransaction.size());
         assertEquals("Deposit0", listTransaction.get(0).getDes());
         assertEquals(100.0, 0.0,listTransaction.get(0).getBalance());
         assertEquals("Withdraw2", listTransaction.get(5).getDes());
         assertEquals(22.0, 0.0, listTransaction.get(5).getBalance());
-        assertEquals(1000L, listTransaction.get(5).getTime());
+        assertEquals(1002L, listTransaction.get(5).getTime());
 
     }
     @Test
     public void testGetAllTransactionInEspaceTime(){
-        when(time.getTime()).thenReturn(50L);
+        when(time.getTime()).thenReturn(52L);
         for(int i = 0; i < 3; i++){
-            createNewTransaction(100.0 + i,"Deposit" + i);
+            createNewTransaction(50L + i,100.0 + i,"Deposit" + i);
         }
         for(int i = 0; i < 3; i++){
-            createNewTransaction(20.0 + i,"Withdraw" + i);
+            createNewTransaction(50L + i,20.0 + i,"Withdraw" + i);
         }
 
         ArgumentCaptor<Transaction> argument = ArgumentCaptor.forClass(Transaction.class);
@@ -108,8 +108,30 @@ public class TestTransaction {
         assertEquals(101.0, 0.0,listTransaction.get(1).getBalance());
         assertEquals("Withdraw1", listTransaction.get(4).getDes());
         assertEquals(21.0, 0.0, listTransaction.get(4).getBalance());
-        assertEquals(50L, listTransaction.get(0).getTime());
+        assertEquals(52L, listTransaction.get(5).getTime());
 
     }
+  @Test
+  public void testGetNTransactionNewExecute(){
+        when(time.getTime()).thenReturn(1100L, 1101L);
+        for(int i = 0; i < 3; i++){
+            createNewTransaction(1000L + i,100.0 + i,"Deposit" + i);
+        }
+        for(int i = 0; i < 3; i++){
+            createNewTransaction(1100L + i,20.0 + i,"Withdraw" + i);
+        }
 
+        ArgumentCaptor<Transaction> argument = ArgumentCaptor.forClass(Transaction.class);
+        verify(transactionDAO, times(6)).saveTransaction(argument.capture());
+
+        List<Transaction> listTransaction = argument.getAllValues();
+        when(transactionDAO.getAllTransaction("0123456789", 3)).thenReturn(listTransaction);
+
+        assertEquals(3, listTransaction.size());
+        assertEquals("Withdraw0", listTransaction.get(0).getDes());
+        assertEquals(20.0, 0.0,listTransaction.get(0).getBalance());
+        assertEquals(1100L, listTransaction.get(0).getTime());
+        assertEquals(1101L, listTransaction.get(1).getTime());
+
+    }
 }
