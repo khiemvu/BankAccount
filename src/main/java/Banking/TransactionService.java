@@ -30,5 +30,8 @@ public class TransactionService {
     public static List<Transaction> getAllTransaction(String accNumber){
         return transactionDao.getAllTransaction(accNumber);
     }
+    public static List<Transaction> getAllTransaction(String accNumber, long startTime, long stopTime){
+        return transactionDao.getAllTransaction(accNumber, startTime, stopTime);
+    }
 
 }

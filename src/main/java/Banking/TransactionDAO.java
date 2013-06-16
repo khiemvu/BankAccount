@@ -14,4 +14,6 @@ interface TransactionDAO {
     Transaction saveTransaction(Transaction capture);
 
     List<Transaction> getAllTransaction(String s);
+
+    List<Transaction> getAllTransaction(String s, long startTime, long stopTime);
 }
