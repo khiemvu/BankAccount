@@ -78,13 +78,13 @@ public class TestTransaction {
 
         List<Transaction> listTransaction = argument.getAllValues();
         when(transactionDAO.getAllTransaction("0123456789")).thenReturn(listTransaction);
-        when(time.getTime()).thenReturn(1002L);
-        assertEquals(6, listTransaction.size());
-        assertEquals("Deposit0", listTransaction.get(0).getDes());
-        assertEquals(100.0, 0.0,listTransaction.get(0).getBalance());
-        assertEquals("Withdraw2", listTransaction.get(5).getDes());
-        assertEquals(22.0, 0.0, listTransaction.get(5).getBalance());
-        assertEquals(1002L, listTransaction.get(5).getTime());
+
+        List<Transaction> transactionList = BankAccountService.getAllTransaction("0123456789");
+        assertEquals(transactionList.size(), listTransaction.size());
+        assertEquals(transactionList.get(0).getDes(), listTransaction.get(0).getDes());
+        assertEquals(transactionList.get(0).getBalance(), 0.0,listTransaction.get(0).getBalance());
+        assertEquals(transactionList,listTransaction);
+
 
     }
     @Test
@@ -102,13 +102,13 @@ public class TestTransaction {
 
         List<Transaction> listTransaction = argument.getAllValues();
         when(transactionDAO.getAllTransaction("0123456789", 10L, 100L)).thenReturn(listTransaction);
-
-        assertEquals(6, listTransaction.size());
-        assertEquals("Deposit0", listTransaction.get(0).getDes());
-        assertEquals(101.0, 0.0,listTransaction.get(1).getBalance());
-        assertEquals("Withdraw1", listTransaction.get(4).getDes());
-        assertEquals(21.0, 0.0, listTransaction.get(4).getBalance());
-        assertEquals(52L, listTransaction.get(5).getTime());
+        List<Transaction> transactionList = BankAccountService.getAllTransaction("0123456789", 10L, 100L);
+        assertEquals(transactionList.size(), listTransaction.size());
+        assertEquals(transactionList.get(0).getDes(), listTransaction.get(0).getDes());
+        assertEquals(transactionList.get(1).getBalance(), 0.0,listTransaction.get(1).getBalance());
+        assertEquals(transactionList.get(4).getDes(), listTransaction.get(4).getDes());
+        assertEquals(transactionList.get(4).getBalance(), 0.0, listTransaction.get(4).getBalance());
+        assertEquals(transactionList, listTransaction);
 
     }
   @Test
@@ -123,12 +123,13 @@ public class TestTransaction {
 
         List<Transaction> listTransaction = argument.getAllValues();
         when(transactionDAO.getAllTransaction("0123456789", 3)).thenReturn(listTransaction);
+        List<Transaction> listTransactionRecord = BankAccountService.getAllTransaction("0123456789", 3);
 
-        assertEquals(3, listTransaction.size());
-        assertEquals("Withdraw0", listTransaction.get(0).getDes());
-        assertEquals(20.0, 0.0,listTransaction.get(0).getBalance());
-        assertEquals(1100L, listTransaction.get(0).getTime());
-        assertEquals(1101L, listTransaction.get(1).getTime());
+        assertEquals(listTransactionRecord.size(), listTransaction.size());
+        assertEquals(listTransactionRecord.get(0).getDes(), listTransaction.get(0).getDes());
+        assertEquals(listTransactionRecord.get(0).getBalance(),0.0,listTransaction.get(0).getBalance());
+        assertEquals(listTransactionRecord.get(0).getTime(),listTransaction.get(0).getTime());
 
+        assertEquals(listTransactionRecord, listTransaction);
     }
 }

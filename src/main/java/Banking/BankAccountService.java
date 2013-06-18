@@ -1,5 +1,7 @@
 package Banking;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: All_in_one
@@ -39,6 +41,17 @@ public class BankAccountService {
         account.setBalance(account.getBalance() - amount);
         bankAccountDAO.saveAccount(account);
         return account;  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    public static List<Transaction> getAllTransaction(String accNumber) {
+        return TransactionService.getAllTransaction(accNumber);  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    public static List<Transaction> getAllTransaction(String accNumber, long timeStart, long timeStop) {
+        return TransactionService.getAllTransaction(accNumber, timeStart, timeStop);  //To change body of created methods use File | Settings | File Templates.
+    }
+    public static List<Transaction> getAllTransaction(String accNumber, int numRecord) {
+        return TransactionService.getAllTransaction(accNumber, numRecord);  //To change body of created methods use File | Settings | File Templates.
     }
 
 }
